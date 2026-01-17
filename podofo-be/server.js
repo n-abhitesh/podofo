@@ -7,7 +7,7 @@ const app = express();
 // CORS configuration - allow frontend origin
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['http://localhost:5173', 'http://localhost:3000'];
+  : ['http://localhost:5173', 'http://localhost:3000', 'https://podofo.vercel.app'];
 
 // Log allowed origins for debugging
 console.log('Allowed CORS origins:', allowedOrigins);

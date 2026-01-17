@@ -1,0 +1,677 @@
+:root {
+  --win-bg: #c0c0c0;
+  --win-dark: #808080;
+  --win-light: #ffffff;
+  --win-shadow: #404040;
+  --win-blue: #000080;
+  --win-blue-light: #0080ff;
+  --win-selected-bg: #000080;
+  --win-selected-text: #ffffff;
+  --win-text: #000000;
+  --win-gray-text: #808080;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  background: #008080;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: default;
+  user-select: none;
+}
+
+/* CRT Scanline Effect (optional) */
+.crt-effect::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* App Window Container */
+.app-window {
+  width: 90%;
+  max-width: 800px;
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  box-shadow: 
+    2px 2px 0 0 var(--win-shadow),
+    -1px -1px 0 0 var(--win-light);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Title Bar */
+.title-bar {
+  background: var(--win-blue);
+  color: var(--win-light);
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: bold;
+  height: 22px;
+  cursor: move;
+}
+
+.title-bar-text {
+  flex: 1;
+  text-align: center;
+}
+
+.title-bar-controls {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.title-bar-button {
+  width: 18px;
+  height: 14px;
+  background: var(--win-bg);
+  border: 1px outset var(--win-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 9px;
+  color: var(--win-text);
+  padding: 0;
+}
+
+.title-bar-button:hover {
+  border: 1px inset var(--win-bg);
+}
+
+.title-bar-button:active {
+  border: 1px inset var(--win-bg);
+}
+
+/* Window Content */
+.window-content {
+  padding: 16px;
+  background: var(--win-bg);
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ASCII Logo */
+.ascii-logo {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--win-text);
+  background: var(--win-bg);
+  padding: 16px;
+  border: 2px inset var(--win-bg);
+  margin-bottom: 16px;
+  white-space: pre;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--win-shadow);
+  padding-bottom: 2px;
+}
+
+.tab {
+  padding: 6px 16px;
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--win-text);
+  position: relative;
+  top: 2px;
+}
+
+.tab:hover {
+  border: 2px outset var(--win-bg);
+}
+
+.tab.active {
+  background: var(--win-bg);
+  border: 2px inset var(--win-bg);
+  border-bottom: 2px solid var(--win-bg);
+  cursor: default;
+}
+
+/* Tab Content */
+.tab-content {
+  display: none;
+  padding: 16px;
+  background: var(--win-bg);
+  border: 2px inset var(--win-bg);
+  min-height: 300px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Buttons */
+.btn {
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  padding: 4px 16px;
+  font-size: 11px;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  color: var(--win-text);
+  cursor: pointer;
+  min-width: 75px;
+  height: 23px;
+  text-align: center;
+}
+
+.btn:hover:not(:disabled) {
+  border: 2px outset var(--win-bg);
+}
+
+.btn:active:not(:disabled) {
+  border: 2px inset var(--win-bg);
+  padding-top: 5px;
+  padding-left: 17px;
+}
+
+.btn:disabled {
+  color: var(--win-gray-text);
+  cursor: not-allowed;
+  border: 2px outset var(--win-bg);
+}
+
+.btn-primary {
+  border: 2px outset var(--win-bg);
+}
+
+/* File Input Area */
+.file-input-container {
+  border: 2px inset var(--win-bg);
+  background: var(--win-light);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.file-input-container.drag-over {
+  border: 2px outset var(--win-blue);
+  background: var(--win-blue-light);
+  color: var(--win-light);
+}
+
+.file-input-container input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+}
+
+.file-input-label {
+  font-size: 11px;
+  color: var(--win-text);
+  pointer-events: none;
+}
+
+.file-input-hint {
+  font-size: 10px;
+  color: var(--win-gray-text);
+  margin-top: 8px;
+  pointer-events: none;
+}
+
+/* File List */
+.file-list {
+  list-style: none;
+  margin-top: 16px;
+}
+
+.file-item {
+  padding: 6px 8px;
+  background: var(--win-light);
+  border: 1px inset var(--win-bg);
+  margin-bottom: 4px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item-remove {
+  background: var(--win-bg);
+  border: 1px outset var(--win-bg);
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: 8px;
+}
+
+.file-item-remove:hover {
+  border: 1px inset var(--win-bg);
+}
+
+.file-item-remove:active {
+  border: 1px inset var(--win-bg);
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  border: 2px inset var(--win-bg);
+  background: var(--win-light);
+  height: 20px;
+  position: relative;
+  margin: 16px 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--win-blue);
+  width: 0%;
+  transition: width 0.1s linear;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 4px;
+  color: var(--win-light);
+  font-size: 10px;
+}
+
+/* Status Bar */
+.status-bar {
+  background: var(--win-bg);
+  border-top: 2px solid var(--win-shadow);
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--win-text);
+  display: flex;
+  align-items: center;
+  min-height: 22px;
+}
+
+.status-bar-left {
+  flex: 1;
+}
+
+.status-bar-right {
+  margin-left: auto;
+}
+
+/* Alert Dialog */
+.alert-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  box-shadow: 2px 2px 0 0 var(--win-shadow);
+  min-width: 300px;
+  z-index: 10000;
+}
+
+.alert-dialog-title {
+  background: var(--win-blue);
+  color: var(--win-light);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.alert-dialog-content {
+  padding: 16px;
+  font-size: 11px;
+  color: var(--win-text);
+}
+
+.alert-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 16px 16px;
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  color: var(--win-text);
+  margin-bottom: 4px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 4px 6px;
+  border: 2px inset var(--win-bg);
+  background: var(--win-light);
+  font-size: 11px;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  color: var(--win-text);
+  height: 23px;
+}
+
+.form-input:focus {
+  outline: 1px dotted var(--win-text);
+  outline-offset: -2px;
+}
+
+/* Section Headers */
+.section-header {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--win-text);
+  margin-bottom: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--win-shadow);
+}
+
+/* Action Buttons Row */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: flex-end;
+}
+
+/* Hidden File Input */
+.hidden-file-input {
+  display: none;
+}
+
+/* Toggle Button for CRT */
+.crt-toggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10001;
+}
+
+/* Reorderable File List */
+.reorderable-list .file-item {
+  cursor: move;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reorderable-list .file-item.dragging {
+  opacity: 0.5;
+  background: var(--win-blue-light);
+}
+
+.file-item-order {
+  font-weight: bold;
+  color: var(--win-gray-text);
+  min-width: 20px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.file-item-controls {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.file-item-btn {
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  padding: 2px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  color: var(--win-text);
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-item-btn:hover:not(:disabled) {
+  border: 2px outset var(--win-bg);
+}
+
+.file-item-btn:active:not(:disabled) {
+  border: 2px inset var(--win-bg);
+  padding-top: 3px;
+  padding-left: 7px;
+}
+
+.file-item-btn:disabled {
+  color: var(--win-gray-text);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Split Options */
+.split-options {
+  margin-top: 16px;
+  padding: 12px;
+  border: 2px inset var(--win-bg);
+  background: var(--win-light);
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--win-text);
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+}
+
+.form-hint {
+  font-size: 10px;
+  color: var(--win-gray-text);
+  margin-top: 4px;
+}
+
+/* Form Select */
+.form-select {
+  width: 100%;
+  padding: 4px 6px;
+  border: 2px inset var(--win-bg);
+  background: var(--win-light);
+  font-size: 11px;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  color: var(--win-text);
+  height: 23px;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: 1px dotted var(--win-text);
+  outline-offset: -2px;
+}
+
+/* Section Subheader */
+.section-subheader {
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--win-text);
+  margin: 12px 0 8px 0;
+}
+
+/* File Size Info */
+.file-size-info,
+.file-count-info {
+  font-size: 10px;
+  color: var(--win-gray-text);
+  margin-top: 8px;
+  padding: 4px 8px;
+  background: var(--win-bg);
+  border: 1px inset var(--win-bg);
+}
+
+/* Refined Windows 95 Styling */
+.window-content {
+  padding: 12px 16px;
+  background: var(--win-bg);
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-list {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.file-item {
+  padding: 4px 6px;
+  background: var(--win-light);
+  border: 1px inset var(--win-bg);
+  margin-bottom: 2px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.file-item-remove {
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 10px;
+  height: 20px;
+  white-space: nowrap;
+}
+
+.file-item-remove:hover {
+  border: 2px outset var(--win-bg);
+}
+
+.file-item-remove:active {
+  border: 2px inset var(--win-bg);
+  padding-top: 3px;
+  padding-left: 9px;
+}
+
+.btn {
+  background: var(--win-bg);
+  border: 2px outset var(--win-bg);
+  padding: 4px 16px;
+  font-size: 11px;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  color: var(--win-text);
+  cursor: pointer;
+  min-width: 75px;
+  height: 23px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.btn:hover:not(:disabled) {
+  border: 2px outset var(--win-bg);
+}
+
+.btn:active:not(:disabled) {
+  border: 2px inset var(--win-bg);
+  padding-top: 5px;
+  padding-left: 17px;
+}
+
+.btn:disabled {
+  color: var(--win-gray-text);
+  cursor: not-allowed;
+  border: 2px outset var(--win-bg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-window {
+    width: 95%;
+  }
+  
+  .tabs {
+    flex-wrap: wrap;
+  }
+  
+  .window-content {
+    padding: 12px;
+  }
+  
+  .file-item-controls {
+    flex-wrap: wrap;
+  }
+}
